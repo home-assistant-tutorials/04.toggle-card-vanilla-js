@@ -94,7 +94,6 @@ class ToggleCardVanillaJs extends HTMLElement {
             .tcvj-toggle--on {
                 background-color: green;
             }
-
             .tcvj-toggle--off{
                 background-color: red;
             }
