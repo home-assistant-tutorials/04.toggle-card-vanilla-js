@@ -13,6 +13,7 @@ class ToggleCardVanillaJs extends HTMLElement {
     setConfig(config) {
         console.log("setConfig")
         this.status.config = config;
+        this.doCheck();
         this.doStyle();
         this.doSetup();
         this.doListen();
@@ -60,6 +61,12 @@ class ToggleCardVanillaJs extends HTMLElement {
     }
 
     // jobs
+    doCheck() {
+        if (!this.status.config.entity) {
+            throw new Error('Please define an entity!');
+        }
+    }
+
     doStyle() {
         const style = this.appendChild(document.createElement("style"));
         style.textContent = `
