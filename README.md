@@ -112,11 +112,13 @@ accessible by the `hass` object which is available later on.
 The `hass` object is updated by the setter `set hass(hass)`upon each
 update of it's state. It is also set upon the initial creation of
 the card. Here we do as less as needed, as it es executed
-a lot of times.
+a lot of times. In this tutorial we basically update modifier classes.
+Also to get the name we have to wait for the hass object.
 
-In this tutorial we basically update modifier classes. Also
-to get the name we have to wait for the hass object. Finally
-we display an error message if the state is not available at all.
+Finally we display an error message if the state is not available
+when the hass object has been set. This is just an example of error
+feedback. Error feedback becomes more important if you plan to
+publish the card.
 
 The next member of the lifecyle is the callback of the click event
 `onToggle`. This name is chosen by us. It calls the job `doToggle`
