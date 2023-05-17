@@ -86,8 +86,7 @@ without fully knowing the parent class.
 For educational reasons I want to keep the complexity low and decide
 against a shadow dom. Not using a shadow dom has the downside that the
 CSS is not encapsulated. So I use a prefix `tcvj-` to separate the CSS.
-Consider to choice a shadow dom as CSS tends to become large.
-(Maybe in another tutorial.)
+In the next tutorial I will show how to replace prefixes by a shadow dom.
 
 The handling of the prefix is inspired by BEM methodology (block, element,
 modifier). The prefix is the equivalent to the block.
