@@ -184,6 +184,11 @@ class ToggleCardVanillaJs extends HTMLElement {
         });
     }
 
+    // configuration defaults
+    static getStubConfig() {
+        return { entity: "input_boolean.tcvj" }
+    }
+
 }
 
 customElements.define('toggle-card-vanilla-js', ToggleCardVanillaJs);
