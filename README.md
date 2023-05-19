@@ -23,7 +23,7 @@ You learn:
 
 * tutorial 03: Hello world card plus
 * you found your approach to reload `card.js` inside the dashboard
-* you know haw to add a resource and a card
+* you know how to add a resource and a card
 
 ## Setup
 
@@ -135,32 +135,68 @@ relation of label and value.
 ### Lifecycle
 
 The `hass()`trigger is called multiple times, but `setConfig()` can also be
-called multiple times, especially inside the card editor.  The configuration is
-related to card itself. We use it to set the entity, etc.  The hass object gives
-access to the states of the entities.
+called multiple times, especially inside the card editor.  `setConfig()` is
+related to the configuration of the card while `hass()` gives access to the
+runtime values of your home assistant system.
 
-The idea is to do the heavy loading of DOM creation only once. Then to trigger
+Our idea is to do the heavy loading of DOM creation only once. Then to trigger
 tiny updates upon the lifecycle events `setConfig()` and `hass()`.
 
 Unfortunately we are not allowed to add child elements directly within the
 `constructor`. The lifecycle trigger `connectedCallback()` would be a typical
 point to do it. But `setConfig()` and `hass()` are even called before it and we
-already need access to the child elements here.  That's why I place the
-attachment of the child elements into `setConfgi()`.  I use a flag `_isAttached`
+already need access to the child elements here. That's why I place the
+attachment of the child elements into `setConfig()`.  I use a flag `_isAttached`
 to run it only once.
 
+```js
+    constructor() {
+        super();
+        console.log("ToggleCardVanillaJs.constructor()")
+        this.doStyle();
+        this.doCard();
+    }
+
+    setConfig(config) {
+        console.log("ToggleCardVanillaJs.setConfig()")
+        this._config = config;
+        if (!this._isAttached) {
+            this.doAttach();
+            this.doQueryElements();
+            this.doListen();
+            this._isAttached = true;
+        }
+        this.doCheckConfig();
+        this.doUpdateConfig();
+    }
+```
+
 I am using the Chrome browser. I can't assure this approach would work for all
-browsers. This issue gets resolved by using a shadow dom within the next
-tutorial. The shadow dom takes child elements already within the constructor at
-least in Chrome. In practice you should try different browsers.
+browsers. The issue itself gets resolved by using a shadow dom within the next
+tutorial. The shadow dom takes child elements already within the constructor.
+That does work at least in Chrome. In practice you should try different browsers.
+
+The `hass()` trigger is straight forward.
+
+```js
+    set hass(hass) {
+        console.log("ToggleCardVanillaJs.hass()")
+        this._hass = hass;
+        this.doUpdateHass()
+    }
+```
 
 The next member of the lifecyle is the callback of the click event `onClicked`.
 This name is freely chosen by me. It calls the job `doToggle` which toggles the
-entity.
+entity. It does not update the card directly. The update of the card happens
+because toggling changes the `hass` object.
 
-It does not update the card directly. The update of the card happens because
-toggling changes the `hass` object, which indirectly triggers the update as seen
-above.
+```js
+    onClicked() {
+        console.log("ToggleCardVanillaJs.onClicked()");
+        this.doToggle();
+    }
+```
 
 ### Registration of the click listener
 
