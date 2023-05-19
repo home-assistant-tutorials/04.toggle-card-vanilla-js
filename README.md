@@ -21,8 +21,9 @@ You learn:
 
 ## Prerequisites
 
-* tutorial 03: Hello world card plus you found your approach to reload `card.js`
-* inside the dashboard
+* tutorial 03: Hello world card plus
+* you found your approach to reload `card.js` inside the dashboard
+* you know haw to add a resource and a card
 
 ## Setup
 
@@ -64,25 +65,43 @@ Find the code in the file named `card.js` alongside with this README.
 
 ### Organization of the class
 
-The class is divided into three sections, *lifecycle*, *accessors* and *jobs*.
+The class is divided into five sections, *private properties*, *lifecycle*, *accessors*, *jobs* and *configuration defaults*.
 
-The lifecyle functions are entry points that are triggered by lifecyle events.
-They log to `console` to observe the order of the lifecyle events. Remove in
-production code.
+The *lifecyle* functions are entry points that are triggered by lifecyle events.
+They log to `console` to enable us to observe the order of the lifecyle events.
+Remove in production code!
 
-The lifecycle functions call jobs to get matters done. The jobs use the
-accessors to access different data and states. The main reason to outsource data
-access into accessors is to make the jobs more readable and clean.
+The *accessor* functions organize access to data and state. They are called by the jobs. The main purpose is to make the jobs more readable and clean.
+
+The *jobs* are called by the lifecyle functions to get the job done.
+
+The *configuration defaults* are related to the configuration. See previous tutorial.
 
 ### CSS
 
-To keep the learning curve flat i decide against a shadow dom in this tutorial.
+To keep the learning curve flat in this tutorial I go without a shadow dom.
 Not using a shadow dom has the downside that the CSS is not encapsulated.  So I
 use a prefix `tcvj-` to separate the CSS.  In the next tutorial I will show how
 to replace prefixes by a shadow dom.
 
 The handling of the prefix is inspired by BEM methodology (block, element,
-modifier). The prefix is the equivalent to the block.
+modifier). The prefix is the equivalent to the block. Done in `doStyle()`:
+
+```css
+    .tcvj-error {
+        text-color: red;
+    }
+    .tcvj-error--hidden {
+        display: none;
+    }
+    .tcvj-dl {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .tcvj-dl--hidden {
+        display: none;
+    }
+```
 
 The outer tag `ha-card` and the class `.card-content` are required to style the
 outer frames correctly.
@@ -91,6 +110,27 @@ outer frames correctly.
 
 For reasons of semantics I decided to use a definition list to describe the
 relation of label and value.
+
+```js
+    doCard() {
+        this._elements.card = document.createElement("ha-card");
+        this._elements.card.innerHTML = `
+                <div class="card-content">
+                    <p class="tcvj-error tcvj-error--hidden">
+                    <dl class="tcvj-dl">
+                        <dt class="tcvj-dt"></dt>
+                        <dd class="tcvj-dd">
+                            <span class="tcvj-toggle">
+                                <span class="tcvj-button"></span>
+                            </span>
+                            <span class="tcvj-value">
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+        `;
+    }
+```
 
 ### Lifecycle
 
