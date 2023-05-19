@@ -1,46 +1,67 @@
 class ToggleCardVanillaJs extends HTMLElement {
 
-    // status
-    status = {};
+    // private properties
 
+    _config;
+    _hass;
+    _elements = {};
+    _isAttached = false;
 
     // lifecycle
     constructor() {
-        console.log("constructor")
         super();
+        console.log("ToggleCardVanillaJs.constructor()")
+        this.doStyle();
+        this.doCard();
     }
 
     setConfig(config) {
-        console.log("setConfig")
-        this.status.config = config;
-        this.doCheck();
-        this.doStyle();
-        this.doSetup();
-        this.doListen();
+        console.log("ToggleCardVanillaJs.setConfig()")
+        this._config = config;
+        if (!this._isAttached) {
+            this.doAttach();
+            this.doQueryElements();
+            this.doListen();
+            this._isAttached = true;
+        }
+        this.doCheckConfig();
+        this.doUpdateConfig();
     }
 
     set hass(hass) {
-        console.log("hass")
-        this.status.hass = hass;
-        this.doUpdate()
+        console.log("ToggleCardVanillaJs.hass()")
+        this._hass = hass;
+        this.doUpdateHass()
     }
 
-    onToggle() {
-        console.log("onToggle");
+    connectedCallback() {
+        console.log("ToggleCardVanillaJs.connectedCallback()")
+    }
+
+    onClicked() {
+        console.log("ToggleCardVanillaJs.onClicked()");
         this.doToggle();
     }
 
     // accessors
+    isOff() {
+        return this.getState().state == 'off';
+    }
+
+    isOn() {
+        return this.getState().state == 'on';
+    }
+
     getHeader() {
-        return this.status.config.header;
+        return this._config.header;
     }
 
     getEntityID() {
-        return this.status.config.entity;
+        return this._config.entity;
     }
 
     getState() {
-        return this.status.hass.states[this.getEntityID()];
+        return this._hass.states[this.getEntityID()];
     }
 
     getAttributes() {
@@ -52,24 +73,17 @@ class ToggleCardVanillaJs extends HTMLElement {
         return friendlyName ? friendlyName : this.getEntityID();
     }
 
-    isOff() {
-        return this.getState().state == 'off';
-    }
-
-    isOn() {
-        return this.getState().state == 'on';
-    }
 
     // jobs
-    doCheck() {
-        if (!this.status.config.entity) {
+    doCheckConfig() {
+        if (!this._config.entity) {
             throw new Error('Please define an entity!');
         }
     }
 
     doStyle() {
-        const style = this.appendChild(document.createElement("style"));
-        style.textContent = `
+        this._elements.style = document.createElement("style");
+        this._elements.style.textContent = `
             .tcvj-error {
                 text-color: red;
             }
@@ -125,8 +139,9 @@ class ToggleCardVanillaJs extends HTMLElement {
         `
     }
 
-    doSetup() {
-        const html = `
+    doCard() {
+        this._elements.card = document.createElement("ha-card");
+        this._elements.card.innerHTML = `
                 <div class="card-content">
                     <p class="tcvj-error tcvj-error--hidden">
                     <dl class="tcvj-dl">
@@ -141,45 +156,57 @@ class ToggleCardVanillaJs extends HTMLElement {
                     </dl>
                 </div>
         `;
-        const card = this.appendChild(document.createElement("ha-card"));
-        if (this.getHeader()) {
-            card.setAttribute("header", this.getHeader());
-        }
-        card.innerHTML = html;
-        this.status.error = card.querySelector(".tcvj-error")
-        this.status.dl = card.querySelector(".tcvj-dl")
-        this.status.topic = card.querySelector(".tcvj-dt")
-        this.status.toggle = card.querySelector(".tcvj-toggle")
-        this.status.value = card.querySelector(".tcvj-value")
+    }
+
+    doAttach() {
+        this.appendChild(this._elements.style);
+        this.appendChild(this._elements.card);
+    }
+
+    doQueryElements() {
+        const card = this._elements.card;
+        this._elements.error = card.querySelector(".tcvj-error")
+        this._elements.dl = card.querySelector(".tcvj-dl")
+        this._elements.topic = card.querySelector(".tcvj-dt")
+        this._elements.toggle = card.querySelector(".tcvj-toggle")
+        this._elements.value = card.querySelector(".tcvj-value")
     }
 
     doListen() {
-        this.status.dl.addEventListener("click", this.onToggle.bind(this), false);
+        this._elements.dl.addEventListener("click", this.onClicked.bind(this), false);
     }
 
-    doUpdate() {
-        if (!this.getState()) {
-            this.status.error.textContent = `${this.getEntityID()} is unavailable.`;
-            this.status.error.classList.remove("tcvj-error--hidden");
-            this.status.dl.classList.add("tcvj-dl--hidden");
+    doUpdateConfig() {
+        if (this.getHeader()) {
+            this._elements.card.setAttribute("header", this.getHeader());
         } else {
-            this.status.error.textContent = "";
-            this.status.topic.textContent = this.getName();
+            this._elements.card.removeAttribute("header");
+        }
+    }
+
+    doUpdateHass() {
+        if (!this.getState()) {
+            this._elements.error.textContent = `${this.getEntityID()} is unavailable.`;
+            this._elements.error.classList.remove("tcvj-error--hidden");
+            this._elements.dl.classList.add("tcvj-dl--hidden");
+        } else {
+            this._elements.error.textContent = "";
+            this._elements.topic.textContent = this.getName();
             if (this.isOff()) {
-                this.status.toggle.classList.remove("tcvj-toggle--on");
-                this.status.toggle.classList.add("tcvj-toggle--off");
+                this._elements.toggle.classList.remove("tcvj-toggle--on");
+                this._elements.toggle.classList.add("tcvj-toggle--off");
             } else if (this.isOn()) {
-                this.status.toggle.classList.remove("tcvj-toggle--off");
-                this.status.toggle.classList.add("tcvj-toggle--on");
+                this._elements.toggle.classList.remove("tcvj-toggle--off");
+                this._elements.toggle.classList.add("tcvj-toggle--on");
             }
-            this.status.value.textContent = this.getState().state;
-            this.status.error.classList.add("tcvj-error--hidden");
-            this.status.dl.classList.remove("tcvj-dl--hidden");
+            this._elements.value.textContent = this.getState().state;
+            this._elements.error.classList.add("tcvj-error--hidden");
+            this._elements.dl.classList.remove("tcvj-dl--hidden");
         }
     }
 
     doToggle() {
-        this.status.hass.callService('input_boolean', 'toggle', {
+        this._hass.callService('input_boolean', 'toggle', {
             entity_id: this.getEntityID()
         });
     }
