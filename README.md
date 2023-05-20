@@ -49,12 +49,11 @@ shows up as the label in  the card.
 
 ### In the dashboard
 
-Once the card is created you add it to the dashboard as done in the previous
-tutorials. That is you configure it as a custom card.
+After registering the card as a resource you add it to the dashboard.
 
 ![card configuration](img/card-configuration.png)
 
-You can set a hearder, too.
+You can set a header, too.
 
 ![card configuration with header](img/header-configuration.png)
 
