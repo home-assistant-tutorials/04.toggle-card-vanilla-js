@@ -199,6 +199,14 @@ because toggling changes the `hass` object.
     }
 ```
 
+### Attaching the children
+
+```js
+    doAttach() {
+        this.append(this._elements.style, this._elements.card);
+    }
+```
+
 ### Registration of the click listener
 
 During the initial setup we also register the click listener `onClicked`.  This

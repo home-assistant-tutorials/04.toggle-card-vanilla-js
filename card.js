@@ -159,8 +159,7 @@ class ToggleCardVanillaJs extends HTMLElement {
     }
 
     doAttach() {
-        this.appendChild(this._elements.style);
-        this.appendChild(this._elements.card);
+        this.append(this._elements.style, this._elements.card);
     }
 
     doQueryElements() {
