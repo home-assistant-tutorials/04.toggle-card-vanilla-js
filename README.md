@@ -14,15 +14,17 @@ Basic card functionality without a full development stack
 
 You learn:
 
-* how to do a card with plain vanilla javascript a system to organize the class
-* encapsulation of CSS by use of a prefix (BEM inspired) the full hass cycle of
-* reading and writing a state how to bind the current context to the event
-* callback
+* how to do a card with plain vanilla javascript
+* a system to organize the class
+* encapsulation of CSS by use of a prefix (BEM inspired)
+* the full hass cycle of
+* reading and writing a state
+* how to bind the current context to the event callback
 
 ## Prerequisites
 
 * tutorial 03: Hello world card plus
-* you found your approach to reload `card.js` inside the dashboard
+* you found your solution to reload `card.js` inside the dashboard
 * you know how to add a resource and a card
 
 ## Setup
