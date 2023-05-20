@@ -24,7 +24,7 @@ You learn:
 ## Prerequisites
 
 * tutorial 03: Hello world card plus
-* you found your solution to reload `card.js` inside the dashboard
+* you found your solution to reload `card.js` with the dashboard
 * you know how to add a resource and a card
 
 ## Setup
@@ -249,7 +249,7 @@ cards.
 You can set a header during the configuration of the card.  If one is available
 it will be prepended to the card as usual.
 
-### Error message
+### Error messages
 
 Finally we display an error message if the state of the entity is not available
 when the hass object has been set. This is just an example of error feedback.
