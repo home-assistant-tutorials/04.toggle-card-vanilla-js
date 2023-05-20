@@ -2,9 +2,9 @@
 
 ![toggle on](img/toggle-on.png) ![toggle off](img/toggle-off.png)
 
-Basic card functionality without a full development stack
+Basic card functionality without a full development stack (and without a shadow dom)
 
-***
+ ***
 
 * @published: May 2023
 * @author: Elmar Hinz
