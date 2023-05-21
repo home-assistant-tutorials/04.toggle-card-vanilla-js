@@ -172,10 +172,8 @@ to run it only once.
     }
 ```
 
-I am using the Chrome browser. I can't assure this approach would work for all
-browsers. The issue itself gets resolved by using a shadow dom within the next
-tutorial. The shadow dom takes child elements already within the constructor.
-That does work at least in Chrome. In practice you should try different browsers.
+The issue itself gets resolved by using a shadow dom within the next tutorial.
+The shadow dom takes child elements already within the constructor.
 
 The `hass()` trigger is straight forward.
 
