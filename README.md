@@ -15,6 +15,7 @@ Basic card functionality without a full development stack (and without a shadow 
 You learn:
 
 * how to do a card with plain vanilla javascript
+* how to create a helper entity toggle
 * a system to organize the class
 * encapsulation of CSS by use of a prefix (BEM inspired)
 * the full hass cycle of
@@ -24,8 +25,10 @@ You learn:
 ## Prerequisites
 
 * tutorial 03: Hello world card plus
-* you found your solution to reload `card.js` with the dashboard
+* you know how to reload `card.js` and dashboard after editing
 * you know how to add a resource and a card
+
+In doubt revisit tutorial 02.
 
 ## Setup
 
