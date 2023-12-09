@@ -220,7 +220,7 @@ created by binding the card (`this`) to the callback.
 
 ```js
     doListen() {
-        this.status.dl.addEventListener("click", this.onClicked.bind(this),false);
+        this._elements.dl.addEventListener("click", this.onClicked.bind(this),false);
     }
 ```
 
@@ -234,7 +234,7 @@ cards.
 
 ```js
     doToggle() {
-        this.status.hass.callService('input_boolean', 'toggle', {
+        this._hass.callService('input_boolean', 'toggle', {
             entity_id: this.getEntityID()
         });
     }
@@ -244,7 +244,7 @@ cards.
 
 ```js
     getHeader() {
-        return this.status.config.header;
+        return this._config.header;
     }
 ```
 
